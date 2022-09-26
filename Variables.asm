@@ -7,8 +7,8 @@
 ; Constants
 ; -------------------------------------------------------------------------
 
-ROWTILECNT	EQU	(320/8)+4
-COLTILECNT	EQU	(224/8)+4
+ROWTILECNT	EQU	(320/8)+4		; Number of tiles per row
+COLTILECNT	EQU	(224/8)+4		; Number of tiles per blocks
 
 ; -------------------------------------------------------------------------
 ; RAM
