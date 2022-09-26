@@ -1,1 +1,2 @@
-# md-scroll-demo
+# Basic Mega Drive Scroll Demo
+A very basic and stripped down demo for scrolling on the Mega Drive. Draws from a 1024x1024 tilemap onto a 512x256px plane and repeats infinitely. Was created in response to someone who wanted to know how it worked.
