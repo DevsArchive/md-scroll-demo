@@ -23,8 +23,8 @@ RefreshScreen:
 	
 .Draw:
 	movem.l	d0/a0,-(sp)			; Draw column
-	bsr.w	DrawColumn2
-	bsr.w	FlushColumn
+	bsr.w	GetColumnData2
+	bsr.w	DrawColumn
 	movem.l	(sp)+,d0/a0
 	
 	addi.w	#16,d0				; Next column
@@ -32,13 +32,13 @@ RefreshScreen:
 	rts
 
 ; -------------------------------------------------------------------------
-; Draw column from tilemap
+; Get column from tilemap
 ; -------------------------------------------------------------------------
 ; PARAMETERS:
 ;	a0.l - Pointer to tilemap
 ; -------------------------------------------------------------------------
 
-DrawColumn:
+GetColumnData:
 	move.w	cameraX.w,d0			; Update "previous" camera X position
 	andi.w	#$FFF0,d0
 	move.w	prevCamX.w,d1
@@ -50,18 +50,18 @@ DrawColumn:
 
 .DrawLeft:
 	subi.w	#16,d0				; Draw left of the camera
-	bra.s	DrawColumn2
+	bra.s	GetColumnData2
 
 .DrawRight:
 	addi.w	#320,d0				; Draw right of the camera
-	bra.s	DrawColumn2
+	bra.s	GetColumnData2
 
 .End:
 	rts
 
 ; -------------------------------------------------------------------------
 
-DrawColumn2:
+GetColumnData2:
 	move.w	cameraY.w,d1			; Draw from the top of the camera
 	andi.w	#$FFF0,d1
 	subi.w	#16,d1
@@ -115,13 +115,13 @@ DrawColumn2:
 	rts
 
 ; -------------------------------------------------------------------------
-; Draw row from tilemap
+; Get row from tilemap
 ; -------------------------------------------------------------------------
 ; PARAMETERS:
 ;	a0.l - Pointer to tilemap
 ; -------------------------------------------------------------------------
 
-DrawRow:
+GetRowData:
 	move.w	cameraY.w,d1			; Update "previous" camera Y position
 	andi.w	#$FFF0,d1
 	move.w	prevCamY.w,d0
@@ -133,18 +133,18 @@ DrawRow:
 
 .DrawTop:
 	subi.w	#16,d1				; Draw above camera
-	bra.s	DrawRow2
+	bra.s	GetRowData2
 
 .DrawBottom:
 	addi.w	#224,d1				; Draw below camera
-	bra.s	DrawRow2
+	bra.s	GetRowData2
 
 .End:
 	rts
 
 ; -------------------------------------------------------------------------
 
-DrawRow2:
+GetRowData2:
 	move.w	cameraX.w,d0			; Draw from the left of the camera
 	andi.w	#$FFF0,d0
 	subi.w	#16,d0
@@ -199,10 +199,10 @@ DrawRow2:
 	rts
 
 ; -------------------------------------------------------------------------
-; Flush column
+; Draw column and flush buffer
 ; -------------------------------------------------------------------------
 
-FlushColumn:
+DrawColumn:
 	lea	$C00004,a0			; VDP control port
 	lea	-4(a0),a1			; VDP data port
 	lea	colBuffer.w,a2			; Column buffer
@@ -261,10 +261,10 @@ FlushColumn:
 	rts
 
 ; -------------------------------------------------------------------------
-; Flush row
+; Draw row and flush buffer
 ; -------------------------------------------------------------------------
 
-FlushRow:
+DrawRow:
 	lea	$C00004,a0			; VDP control port
 	lea	-4(a0),a1			; VDP data port
 	lea	rowBuffer.w,a2			; Row buffer

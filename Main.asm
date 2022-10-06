@@ -186,10 +186,10 @@ MainLoop:
 	addq.w	#2,cameraX.w			; Move camera right
 	
 .Draw:
-	lea	Tilemap,a0			; Draw column
-	bsr.w	DrawColumn
-	lea	Tilemap,a0			; Draw row
-	bsr.w	DrawRow
+	lea	Tilemap,a0			; Get column data
+	bsr.w	GetColumnData
+	lea	Tilemap,a0			; Get row data
+	bsr.w	GetRowData
 
 	bra.s	MainLoop			; Loop
 
@@ -216,8 +216,8 @@ VInterrupt:
 	move.l	#$40000010,$C00004		; Set vertical scroll offset
 	move.w	cameraY.w,$C00000
 
-	bsr.w	FlushColumn			; Flush column
-	bsr.w	FlushRow			; Flush row
+	bsr.w	DrawColumn			; Draw column
+	bsr.w	DrawRow				; Draw row
 	
 	move.w	#0,$A11100			; Start	the Z80
 
